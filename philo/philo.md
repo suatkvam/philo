@@ -45,20 +45,5 @@ About the logs of your program:
     their actual death.
 * Again, philosophers should avoid dying!
 
-<<<<<<< HEAD
 ```diff
 - # Your program must not have any data races.
-=======
-# <span style="color:red;">Your program must not have any data races.</span>
-
-philo mandatory specific rules
-
-• Each philosopher must be represented as a separate thread.
-
-• There is one fork between each pair of philosophers. Therefore, if there are several
-philosophers, each philosopher has a fork on their left side and a fork on their right
-side. If there is only one philosopher, they will have access to just one fork.
-
-• To prevent philosophers from duplicating forks, you should protect each fork’s state
-with a mutex.
->>>>>>> 0de9f29 (added some notes)

@@ -12,10 +12,12 @@ typedef struct s_philo_data
 	long long		time_to_eat;
 	long long		time_to_sleep;
 
+	long long		start_time;
 	int				is_dead;
-
+	int				ready_philos_count;
 	struct s_philo	*philos;
 
+	pthread_mutex_t	start_gate_lock;
 	pthread_mutex_t	*forks;
 
 	pthread_mutex_t	data_lock;
@@ -25,6 +27,7 @@ typedef struct s_philo_data
 
 typedef struct s_philo
 {
+	pthread_t		thread_id;
 	int				id;
 	long long		eat_count;
 	long long		last_eat_time;

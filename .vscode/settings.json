@@ -1,5 +1,7 @@
 {
     "files.associations": {
-        "climits": "c"
+        "climits": "c",
+        "utils.h": "c",
+        "time.h": "c"
     }
 }

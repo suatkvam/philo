@@ -85,25 +85,26 @@ void	init_mutexes_and_philos(t_philo_data *philo_data,
 		philo_data->philos[i].must_eat_target = must_eat_value;
 		philo_data->philos[i].data = philo_data;
 		pthread_mutex_init(&philo_data->forks[i], NULL);
-	}
-	if (philo_data->philos[i].id == 1)
-	{
-		// öldü
-	}
-	else if (philo_data->philos[i].id % 2 == 0)
-	{
-		// Önce sol çatalı alacak (ID ile aynı index'teki)
-		philo_data->philos[i].left_fork = &philo_data->forks[i];
-		// Sonra sağ çatalı alacak (bir sonraki)
-		// (i + 1) % n -> son filozofun çatalının 0 olmasını sağlar
-		philo_data->philos[i].right_fork = &philo_data->forks[(i + 1) % n];
-	} // Tek ID'li filozoflar (örn: 1, 3, 5)
-	else
-	{
-		// Önce sağ çatalı alacak (ters sıralama)
-		philo_data->philos[i].left_fork = &philo_data->forks[(i + 1) % n];
-		// Sonra sol çatalı alacak
-		philo_data->philos[i].right_fork = &philo_data->forks[i];
+		if (n == 1)
+		{
+			philo_data->philos[i].left_fork = &philo_data->forks[i];
+			philo_data->philos[i].right_fork = NULL;
+		}
+		else if (philo_data->philos[i].id % 2 == 0)
+		{
+			// Önce sol çatalı alacak (ID ile aynı index'teki)
+			philo_data->philos[i].left_fork = &philo_data->forks[i];
+			// Sonra sağ çatalı alacak (bir sonraki)
+			// (i + 1) % n -> son filozofun çatalının 0 olmasını sağlar
+			philo_data->philos[i].right_fork = &philo_data->forks[(i + 1) % n];
+		} // Tek ID'li filozoflar (örn: 1, 3, 5)
+		else
+		{
+			// Önce sağ çatalı alacak (ters sıralama)
+			philo_data->philos[i].left_fork = &philo_data->forks[(i + 1) % n];
+			// Sonra sol çatalı alacak
+			philo_data->philos[i].right_fork = &philo_data->forks[i];
+		}
 	}
 }
 
@@ -115,26 +116,24 @@ void	eat(t_philo *philo)
 	write_status(philo, "has taken a fork");
 	pthread_mutex_lock(philo->right_fork);
 	write_status(philo, "has taken a fork");
-
 	// yemek yeme
 	write_status(philo, "İs eating");
 	pthread_mutex_lock(&philo->data->data_lock);
 	philo->last_eat_time = get_current_time();
 	philo->eat_count++;
 	pthread_mutex_unlock(&philo->data->data_lock);
-
 	usleep(philo->data->time_to_eat * 1000);
 	// çatalları bırak
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
 }
-void sleep(t_philo *philo)
+void	sleep(t_philo *philo)
 {
 	write_status(philo, "Is sleeping");
 	usleep(philo->data->time_to_sleep * 1000);
 }
 
-void think(t_philo *philo)
+void	think(t_philo *philo)
 {
 	write_status(philo, "Is thinking");
 }
@@ -266,16 +265,16 @@ void	observer(t_philo_data *philo_data)
 	return ;
 }
 
-void clean_resources(t_philo_data *data)
+void	clean_resources(t_philo_data *data)
 {
-	int i;
-	int n;
+	int	i;
+	int	n;
 
 	i = -1;
 	n = data->number_of_philosophers;
-	while(i++ < n)
+	while (++i < n)
 	{
-		pthread_join(data->philos[i].thread_id,NULL);
+		pthread_join(data->philos[i].thread_id, NULL);
 	}
 	i = -1;
 	while ((++i < n))
@@ -283,11 +282,11 @@ void clean_resources(t_philo_data *data)
 		pthread_mutex_destroy(&data->forks[i]);
 	}
 	pthread_mutex_destroy(&data->data_lock);
-    pthread_mutex_destroy(&data->write_lock);
-    pthread_mutex_destroy(&data->start_gate_lock);
+	pthread_mutex_destroy(&data->write_lock);
+	pthread_mutex_destroy(&data->start_gate_lock);
 	// 3. Hafızayı serbest bırak
-    free(data->philos);
-    free(data->forks);
+	free(data->philos);
+	free(data->forks);
 }
 
 int	main(int argc, char const *argv[])

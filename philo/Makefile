@@ -13,6 +13,7 @@ SRCS = $(addprefix utils/, $(UTILS_SRC)) \
        init_mutexes_and_philos.c \
        write_status.c \
        philo_routine.c \
+       philo_routine_utils.c \
        start_simulation.c \
        observer.c \
        cleanup.c \

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   philo.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: akivam <akivam@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/12 21:21:26 by akivam            #+#    #+#             */
+/*   Updated: 2025/11/12 21:28:56 by akivam           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef PHILO_H
 # define PHILO_H
 
@@ -54,5 +66,10 @@ void				observer(t_philo_data *philo_data);
 void				clean_resources(t_philo_data *data);
 void				write_status(t_philo *philo, const char *status);
 void				*philo_routine(void *argument);
+void				eat_routine(t_philo *philo);
+void				sleep_routine(t_philo *philo);
+void				think_routine(t_philo *philo);
+int					is_simulation_over(t_philo *philo);
+void				philo_life_cycle(t_philo *philo);
 
 #endif

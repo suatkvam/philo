@@ -2,6 +2,9 @@
 # define PHILO_H
 
 # include <pthread.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
 
 struct s_philo;
 
@@ -39,5 +42,17 @@ typedef struct s_philo
 	pthread_mutex_t	*right_fork;
 
 }					t_philo;
+
+int		validate_arguments(int argc, char const *argv[]);
+int		parse_data(int argc, char const *argv[], t_philo_data *philo_data,
+			long long *must_eat_value);
+int		allocate_resources(t_philo_data *philo_data);
+void	init_mutexes_and_philos(t_philo_data *philo_data,
+			long long must_eat_value);
+void	start_simulation(t_philo_data *philo_data);
+void	observer(t_philo_data *philo_data);
+void	clean_resources(t_philo_data *data);
+void	write_status(t_philo *philo, const char *status);
+void	*philo_routine(void *argument);
 
 #endif

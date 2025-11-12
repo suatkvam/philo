@@ -2,19 +2,23 @@ NAME = philo
 
 OBJ_DIR = obj
 
-PHILO_UTILS = 
-PHILO_SRC = 
+UTILS_SRC = ft_atoll.c \
+            get_time.c \
+            is_not_numeric.c
 
-SRCS = $(addprefix pipex_utils/, $(PIPEX_UTILS)) \
-       $(addprefix parse/, $(PARSER_SRC)) \
+SRCS = $(addprefix utils/, $(UTILS_SRC)) \
+       cleanup.c \
+       init.c \
+       routine.c \
+       simulation.c \
        main.c
 
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-INCLUDE_FLAGS = -I. -I./parse -I./pipex_utils
-CFLAGS += -g -g3
+INCLUDE_FLAGS = -I. -I./utils
+CFLAGS += -g -fsanitize=thread
 CFLAGS += $(INCLUDE_FLAGS)
 
 RM = rm -f
@@ -29,7 +33,7 @@ $(NAME): $(OBJS)
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(@D)
 	@echo "Compiling $<..."
-	@$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -fsanitize=thread -c $< -o $@
 
 clean:
 	@$(RM) -r $(OBJ_DIR)

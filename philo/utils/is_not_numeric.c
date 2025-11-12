@@ -6,7 +6,7 @@ int	is_not_numeric(const char *str)
 	int	i;
 
 	i = 0;
-	while (str[i] == ' ' ||(str[i]>= 9 && str[i] <= 13))
+	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
 		i++;
 	if (str[i] == '-')
 		return (1);

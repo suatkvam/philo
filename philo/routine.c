@@ -26,7 +26,7 @@ static void	sleep_routine(t_philo *philo)
 static void	think_routine(t_philo *philo)
 {
 	write_status(philo, "is thinking");
-	usleep(100);
+	usleep(1000);
 }
 
 void	write_status(t_philo *philo, const char *status)
@@ -34,6 +34,7 @@ void	write_status(t_philo *philo, const char *status)
 	long long	timestamp;
 
 	pthread_mutex_lock(&philo->data->write_lock);
+	pthread_mutex_lock(&philo->data->data_lock);
 	timestamp = get_current_time() - philo->data->start_time;
 	if (philo->data->is_dead == 0)
 	{
@@ -44,6 +45,7 @@ void	write_status(t_philo *philo, const char *status)
 		printf("%lld %d %s\n", timestamp, philo->id, status);
 	}
 	pthread_mutex_unlock(&philo->data->write_lock);
+	pthread_mutex_unlock(&philo->data->data_lock);
 }
 
 void	*philo_routine(void *argument)

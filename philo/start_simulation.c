@@ -6,7 +6,7 @@
 /*   By: akivam <akivam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 21:21:43 by akivam            #+#    #+#             */
-/*   Updated: 2025/11/12 21:23:13 by akivam           ###   ########.fr       */
+/*   Updated: 2025/11/12 21:30:33 by akivam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@ static void	wait_all_philos_ready(t_philo_data *philo_data)
 	while (1)
 	{
 		pthread_mutex_lock(&philo_data->data_lock);
-		if (philo_data->ready_philos_count == philo_data->number_of_philosophers)
+		if (philo_data->ready_philos_count == \
+			philo_data->number_of_philosophers)
 		{
 			pthread_mutex_unlock(&philo_data->data_lock);
 			break ;

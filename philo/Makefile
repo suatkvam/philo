@@ -7,10 +7,15 @@ UTILS_SRC = ft_atoll.c \
             is_not_numeric.c
 
 SRCS = $(addprefix utils/, $(UTILS_SRC)) \
+       validate_arguments.c \
+       parse_data.c \
+       allocate_resources.c \
+       init_mutexes_and_philos.c \
+       write_status.c \
+       philo_routine.c \
+       start_simulation.c \
+       observer.c \
        cleanup.c \
-       init.c \
-       routine.c \
-       simulation.c \
        main.c
 
 OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))

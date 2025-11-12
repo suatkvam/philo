@@ -18,7 +18,8 @@ OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 INCLUDE_FLAGS = -I. -I./utils
-CFLAGS += -g -fsanitize=thread
+CFLAGS += -g
+# CFLAGS += -g -fsanitize=thread
 CFLAGS += $(INCLUDE_FLAGS)
 
 RM = rm -f
@@ -33,7 +34,8 @@ $(NAME): $(OBJS)
 $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(@D)
 	@echo "Compiling $<..."
-	@$(CC) $(CFLAGS) -fsanitize=thread -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
+# 	@$(CC) $(CFLAGS) -fsanitize=thread -c $< -o $@
 
 clean:
 	@$(RM) -r $(OBJ_DIR)

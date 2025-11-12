@@ -32,11 +32,14 @@ static void	think_routine(t_philo *philo)
 void	write_status(t_philo *philo, const char *status)
 {
 	long long	timestamp;
+	int			is_dead;
 
-	pthread_mutex_lock(&philo->data->write_lock);
 	pthread_mutex_lock(&philo->data->data_lock);
+	is_dead = philo->data->is_dead;
+	pthread_mutex_unlock(&philo->data->data_lock);
+	pthread_mutex_lock(&philo->data->write_lock);
 	timestamp = get_current_time() - philo->data->start_time;
-	if (philo->data->is_dead == 0)
+	if (is_dead == 0)
 	{
 		printf("%lld %d %s\n", timestamp, philo->id, status);
 	}
@@ -45,7 +48,6 @@ void	write_status(t_philo *philo, const char *status)
 		printf("%lld %d %s\n", timestamp, philo->id, status);
 	}
 	pthread_mutex_unlock(&philo->data->write_lock);
-	pthread_mutex_unlock(&philo->data->data_lock);
 }
 
 void	*philo_routine(void *argument)
@@ -64,8 +66,15 @@ void	*philo_routine(void *argument)
 		usleep(philo->data->time_to_die * 1000 + 1000);
 		return (NULL);
 	}
-	while (philo->data->is_dead == 0)
+	while (1)
 	{
+		pthread_mutex_lock(&philo->data->data_lock);
+		if (philo->data->is_dead != 0)
+		{
+			pthread_mutex_unlock(&philo->data->data_lock);
+			break ;
+		}
+		pthread_mutex_unlock(&philo->data->data_lock);
 		eat_routine(philo);
 		sleep_routine(philo);
 		think_routine(philo);

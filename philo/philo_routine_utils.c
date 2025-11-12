@@ -6,7 +6,7 @@
 /*   By: akivam <akivam@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 21:29:01 by akivam            #+#    #+#             */
-/*   Updated: 2025/11/12 21:29:04 by akivam           ###   ########.fr       */
+/*   Updated: 2025/11/12 22:37:39 by akivam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,22 @@ void	sleep_routine(t_philo *philo)
 
 void	think_routine(t_philo *philo)
 {
+	long long	think_time;
+
 	write_status(philo, "is thinking");
-	usleep(1000);
+	// Tek filozof durumu
+	if (philo->data->number_of_philosophers == 1)
+		return ;
+	// Dinamik düşünme süresi hesapla
+	think_time = philo->data->time_to_die - philo->data->time_to_eat
+		- philo->data->time_to_sleep;
+	// Güvenli bölgeye çek (ölmeden önce biraz margin bırak)
+	think_time = think_time / 2;
+	// Çok kısa değilse düşün
+	if (think_time > 1)
+		usleep(think_time * 1000);
+	else
+		usleep(500); // Minimum 0.5ms
 }
 
 int	is_simulation_over(t_philo *philo)

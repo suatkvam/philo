@@ -29,7 +29,6 @@ number_of_philosophers time_to_die time_to_eat time_to_sleep
     Any other philosopher, numbered N, sits between philosopher N - 1 and philosopher
     N + 1.
 
-8
 Philosophers I never thought philosophy would be so deadly
 About the logs of your program:
 * Any state change of a philosopher must be formatted as follows:

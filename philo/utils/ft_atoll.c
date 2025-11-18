@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoll.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akivam <akivam@student.42.fr>              +#+  +:+       +#+        */
+/*   By: akivam <akivam@student.42istanbul.com.tr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/12 21:20:54 by akivam            #+#    #+#             */
-/*   Updated: 2025/11/12 21:20:55 by akivam           ###   ########.fr       */
+/*   Created: 2025/11/15 18:49:42 by akivam            #+#    #+#             */
+/*   Updated: 2025/11/18 14:45:13 by akivam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "utils.h"
 
 long long	ft_atoll(const char *str)

@@ -3,15 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   philo_routine_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: akivam <akivam@student.42.fr>              +#+  +:+       +#+        */
+/*   By: akivam <akivam@student.42istanbul.com.tr>  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/12 21:29:01 by akivam            #+#    #+#             */
-/*   Updated: 2025/11/12 22:37:39 by akivam           ###   ########.fr       */
+/*   Created: 2025/11/15 18:49:42 by akivam            #+#    #+#             */
+/*   Updated: 2025/11/18 14:44:51 by akivam           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include "utils/utils.h"
+
+static void	precise_usleep(long long ms)
+{
+	long long	start;
+	long long	current;
+
+	start = get_current_time();
+	while (1)
+	{
+		current = get_current_time();
+		if (current - start >= ms)
+			break ;
+		usleep(100);
+	}
+}
 
 void	eat_routine(t_philo *philo)
 {
@@ -24,7 +39,7 @@ void	eat_routine(t_philo *philo)
 	philo->last_eat_time = get_current_time();
 	philo->eat_count++;
 	pthread_mutex_unlock(&philo->data->data_lock);
-	usleep(philo->data->time_to_eat * 1000);
+	precise_usleep(philo->data->time_to_eat);
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(philo->left_fork);
 }
@@ -32,7 +47,7 @@ void	eat_routine(t_philo *philo)
 void	sleep_routine(t_philo *philo)
 {
 	write_status(philo, "is sleeping");
-	usleep(philo->data->time_to_sleep * 1000);
+	precise_usleep(philo->data->time_to_sleep);
 }
 
 void	think_routine(t_philo *philo)
@@ -40,39 +55,13 @@ void	think_routine(t_philo *philo)
 	long long	think_time;
 
 	write_status(philo, "is thinking");
-	// Tek filozof durumu
 	if (philo->data->number_of_philosophers == 1)
 		return ;
-	// Dinamik düşünme süresi hesapla
-	think_time = philo->data->time_to_die - philo->data->time_to_eat
-		- philo->data->time_to_sleep;
-	// Güvenli bölgeye çek (ölmeden önce biraz margin bırak)
-	think_time = think_time / 2;
-	// Çok kısa değilse düşün
-	if (think_time > 1)
-		usleep(think_time * 1000);
-	else
-		usleep(500); // Minimum 0.5ms
-}
-
-int	is_simulation_over(t_philo *philo)
-{
-	int	is_dead;
-
-	pthread_mutex_lock(&philo->data->data_lock);
-	is_dead = philo->data->is_dead;
-	pthread_mutex_unlock(&philo->data->data_lock);
-	return (is_dead);
-}
-
-void	philo_life_cycle(t_philo *philo)
-{
-	while (1)
-	{
-		if (is_simulation_over(philo))
-			break ;
-		eat_routine(philo);
-		sleep_routine(philo);
-		think_routine(philo);
-	}
+	if (philo->data->number_of_philosophers % 2 == 0)
+		return ;
+	think_time = (philo->data->time_to_eat * 2) - philo->data->time_to_sleep;
+	if (think_time < 0)
+		think_time = 0;
+	if (think_time > 0)
+		precise_usleep(think_time);
 }

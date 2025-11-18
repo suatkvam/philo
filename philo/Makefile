@@ -25,7 +25,6 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror
 INCLUDE_FLAGS = -I. -I./utils
 CFLAGS += -g
-# CFLAGS += -g -fsanitize=thread
 CFLAGS += $(INCLUDE_FLAGS)
 
 RM = rm -f
@@ -41,8 +40,9 @@ $(OBJ_DIR)/%.o: %.c
 	@mkdir -p $(@D)
 	@echo "Compiling $<..."
 	@$(CC) $(CFLAGS) -c $< -o $@
-# 	@$(CC) $(CFLAGS) -fsanitize=thread -c $< -o $@
 
+fsanitize: re
+       CFLAG += -fsanitize=thread
 clean:
 	@$(RM) -r $(OBJ_DIR)
 	@echo "Cleaned object files."

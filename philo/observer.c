@@ -59,8 +59,10 @@ void	observer(t_philo_data *philo_data)
 {
 	int	i;
 	int	full_philo_cnt;
+	int	is_dead;
 
-	while (philo_data->is_dead == 0)
+	is_dead = 0;
+	while (is_dead == 0)
 	{
 		full_philo_cnt = 0;
 		i = -1;
@@ -73,6 +75,9 @@ void	observer(t_philo_data *philo_data)
 		}
 		if (check_all_philos_full(philo_data, full_philo_cnt))
 			return ;
+		pthread_mutex_lock(&philo_data->data_lock);
+		is_dead = philo_data->is_dead;
+		pthread_mutex_unlock(&philo_data->data_lock);
 		usleep(1000);
 	}
 	return ;

@@ -9,7 +9,6 @@ UTILS_SRC = ft_atoll.c \
 SRCS = $(addprefix utils/, $(UTILS_SRC)) \
        validate_arguments.c \
        parse_data.c \
-       allocate_resources.c \
        init_mutexes_and_philos.c \
        write_status.c \
        philo_routine.c \
@@ -24,7 +23,6 @@ OBJS = $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 INCLUDE_FLAGS = -I. -I./utils
-CFLAGS += -g
 CFLAGS += $(INCLUDE_FLAGS)
 
 RM = rm -f
@@ -41,6 +39,9 @@ $(OBJ_DIR)/%.o: %.c
 	@echo "Compiling $<..."
 	@$(CC) $(CFLAGS) -c $< -o $@
 
+debug: re
+       CFLAGS += -g
+
 fsanitize: re
        CFLAG += -fsanitize=thread
 clean:
@@ -53,4 +54,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re fsanitize debug

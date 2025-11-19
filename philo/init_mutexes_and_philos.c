@@ -40,6 +40,22 @@ static void	init_single_philo(t_philo_data *philo_data, int i,
 	}
 }
 
+int	allocate_resources(t_philo_data *philo_data)
+{
+	philo_data->philos = malloc(sizeof(t_philo)
+			* philo_data->number_of_philosophers);
+	if (!philo_data->philos)
+		return (1);
+	philo_data->forks = malloc(sizeof(pthread_mutex_t)
+			* philo_data->number_of_philosophers);
+	if (!philo_data->forks)
+	{
+		free(philo_data->philos);
+		return (1);
+	}
+	return (0);
+}
+
 void	init_mutexes_and_philos(t_philo_data *philo_data,
 		long long must_eat_value)
 {

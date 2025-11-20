@@ -9,6 +9,7 @@ UTILS_SRC = ft_atoll.c \
 SRCS = $(addprefix utils/, $(UTILS_SRC)) \
        validate_arguments.c \
        parse_data.c \
+       allocate_resources.c \
        init_mutexes_and_philos.c \
        write_status.c \
        philo_routine.c \
